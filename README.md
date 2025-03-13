@@ -1,24 +1,31 @@
 # Layer2 MCP Server ![MCP Implementation](https://img.shields.io/badge/MCP-Implementation-blue)
 
-A Model context protocol server for interacting with the Ethereum layer 2 network for development and performing token operations. The server provides a standardized interface for AI models to interact with blockchain networks, deploy tokens, and manage transactions.
+A model context protocol server for interacting with the Ethereum layer 2 network for development and use, which provides a standardized interface for AI models to interact with blockchain networks, deploy tokens, and manage transactions.
 
 ## Overview
 
 The MCP Layer2 server implements the [Model Context Protocol](https://modelcontextprotocol.io) specification, providing AI models with tools to:
 
+1. Basic
 - Deploy new ERC20 token contracts
 - Transfer ETH to specific addresses
 - Transfer ERC20 tokens to specific addresses
 - Perform batch transfers to random addresses for testing and simulation
+2. Advance（Complex intent transactions as the core）
+- Support cross-chain intents
+- L1 Settlement Verification
+- Data Availability Solutions
 
 This implementation enables AI assistants to directly interact with blockchain networks through a standardized protocol, making it easier to integrate blockchain capabilities into AI workflows.
+
+
 
 ## Installation
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/mcp-layer2.git
-cd mcp-layer2
+git clone https://github.com/anylots/layer2-mcp.git
+cd layer2-mcp
 
 # Install dependencies
 npm install
