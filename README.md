@@ -1,0 +1,189 @@
+# Layer2 MCP Server ![MCP Implementation](https://img.shields.io/badge/MCP-Implementation-blue)
+
+A Model context protocol server for interacting with the Ethereum layer 2 network for development and performing token operations. The server provides a standardized interface for AI models to interact with blockchain networks, deploy tokens, and manage transactions.
+
+## Overview
+
+The MCP Layer2 server implements the [Model Context Protocol](https://modelcontextprotocol.io) specification, providing AI models with tools to:
+
+- Deploy new ERC20 token contracts
+- Transfer ETH to specific addresses
+- Transfer ERC20 tokens to specific addresses
+- Perform batch transfers to random addresses for testing and simulation
+
+This implementation enables AI assistants to directly interact with blockchain networks through a standardized protocol, making it easier to integrate blockchain capabilities into AI workflows.
+
+## Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/yourusername/mcp-layer2.git
+cd mcp-layer2
+
+# Install dependencies
+npm install
+
+# Build the project
+npm run build
+```
+
+## Quick Start
+
+### Configuration
+
+Create a `.env` file in the root directory with the following variables:
+
+```
+PRIVATE_KEY=your_ethereum_private_key
+ETH_L2_RPC=your_layer2_rpc_url
+```
+
+### Using with Claude Desktop
+
+1. Install Claude Desktop
+2. Add a new MCP server with the following configuration:
+   ```json
+    "ethers": {
+      "command": "node",
+      "args": [
+        "/path-to-layer2-mcp/build/src/index.js"
+      ],
+      "env": {
+        "PRIVATE_KEY": "<<your eth-wallet private key>>",
+        "ETH_L2_RPC": "<<The layer2 chain rpc you want to interact with>>"
+      }
+    }
+   ```
+3. The tools will now be available in your Claude conversations
+
+
+### Starting the Server
+
+```bash
+npm start
+```
+
+### Using with Claude or other MCP-compatible AI models
+
+1. Configure your AI client to connect to the MCP server
+2. The following tools will be available to the AI:
+   - `deployToken`: Deploy a new ERC20 token contract
+   - `transferETH`: Transfer ETH to a specific address
+   - `transferToken`: Transfer tokens to a specific address
+   - `batchTransfer`: Perform batch transfers to random addresses
+
+### Testing with MCP Inspector
+
+1. Install the MCP Inspector:
+   ```bash
+   npm install -g @modelcontextprotocol/inspector
+   ```
+
+2. Start the server:
+   ```bash
+   npm start
+   ```
+
+3. In another terminal, run the inspector:
+   ```bash
+   mcp-inspector
+   ```
+
+4. Open http://localhost:5173 in your browser to interact with the tools
+
+## Available Tools
+
+### Token Operations
+- `deployToken`: Deploy a new ERC20 token contract
+  - Returns the contract address and transaction hash
+
+- `transferETH`: Transfer ETH to a specific address
+  - Parameters:
+    - `targetAddress`: The address to receive the ETH
+    - `amount`: Amount of ETH to transfer (1 = 1 ETH)
+  - Returns the transaction hash
+
+- `transferToken`: Transfer tokens to a specific address
+  - Parameters:
+    - `tokenAddress`: The address of the deployed ERC20 token contract
+    - `targetAddress`: The address to receive the tokens
+  - Returns the transaction hash
+
+- `batchTransfer`: Perform batch transfers to random addresses
+  - Parameters:
+    - `tokenAddress`: The address of the deployed ERC20 token contract
+    - `transactionCount`: Number of transactions to perform
+    - `durationSeconds`: Total duration in seconds for the batch operation
+  - Executes the specified number of transactions over the given time period
+
+## Example Usage
+
+Here's an example of how an AI assistant might use these tools:
+
+1. Deploy a new ERC20 token contract:
+   ```
+   AI: I'll deploy a new ERC20 token contract for you.
+   [Tool call: deployToken]
+   Result: Token deployed successfully!
+           Contract Address: 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
+           Transaction Hash: 0xd4ec9bf7ca67a581e78a8637974cd84c9c3524a75efe8851b808f0d58879ebd9
+   ```
+
+2. Transfer ETH to an address:
+   ```
+   AI: I'll transfer 10 ETH to the specified address.
+   [Tool call: transferETH with targetAddress=0x6ea5e8971eC8cf32d43AeB18a6999aFc3a3ec65d, amount=10]
+   Result: ETH transfer successful!
+           Transaction Hash: 0x9f46076f1c9b84d49c7314d8b8586e20c5c5b389ec56931e510408b3f6052bac
+   ```
+
+3. Transfer tokens to an address:
+   ```
+   AI: I'll transfer tokens to the specified address.
+   [Tool call: transferToken with tokenAddress=0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512, 
+               targetAddress=0x6ea5e8971eC8cf32d43AeB18a6999aFc3a3ec65d]
+   Result: Token transfer successful!
+           Transaction Hash: 0x82b7bdc69ffebfc946ab5101cf853a06e64d5aceaf96ca4fe70622fcee89d83e
+   ```
+
+4. Perform batch transfers:
+   ```
+   AI: I'll execute 100 token transfers over 10 seconds.
+   [Tool call: batchTransfer with tokenAddress=0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512, 
+               transactionCount=100, durationSeconds=10]
+   Result: Batch transfer initiated!
+           Processing 100 transactions over 10 seconds.
+   ```
+
+## Network Support
+
+The server is configured to work with any Ethereum-compatible network, including:
+- Ethereum Mainnet
+- Layer 2 networks (Optimism, Arbitrum, etc.)
+- Local development networks (Hardhat, Ganache)
+
+Configure the network by setting the `ETH_L2_RPC` environment variable to the appropriate RPC URL.
+
+## Development
+
+```bash
+# Install dependencies
+npm install
+
+# Run in development mode
+npm run dev
+
+# Build
+npm run build
+
+# Start the server
+npm start
+```
+
+## Contributing
+
+Issues and pull requests are welcome on GitHub.
+
+## License
+
+This project is licensed under the ISC License - see the [LICENSE](LICENSE) file for details. 
