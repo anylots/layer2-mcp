@@ -11,10 +11,9 @@ The MCP Layer2 server implements the [Model Context Protocol](https://modelconte
 - Transfer ETH to specific addresses
 - Transfer ERC20 tokens to specific addresses
 - Perform batch transfers to random addresses for testing and simulation
-2. Advance（Complex intent transactions as the core）
-- Support cross-chain intents
-- L1 Settlement Verification
-- Data Availability Solutions
+2. Advance
+- L1 Settlement & Data Availability Verification
+- Support cross-chain
 
 This implementation enables AI assistants to directly interact with blockchain networks through a standardized protocol, making it easier to integrate blockchain capabilities into AI workflows.
 
@@ -50,7 +49,7 @@ ETH_L2_RPC=your_layer2_rpc_url
 1. Install Claude Desktop
 2. Add a new MCP server with the following configuration:
    ```json
-    "ethers": {
+    "layer2-mcp": {
       "command": "node",
       "args": [
         "/path-to-layer2-mcp/build/src/index.js"
