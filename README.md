@@ -17,6 +17,63 @@ The MCP Layer2 server implements the [Model Context Protocol](https://modelconte
 
 This implementation enables AI assistants to directly interact with blockchain networks through a standardized protocol, making it easier to integrate blockchain capabilities into AI workflows.
 
+## Example Usage
+
+Here's an example of how an AI assistant might use these tools:
+
+1. Deploy a new ERC20 token contract:
+   ```
+   👤You: Deploy a new ERC20 token
+
+   🤖AI: I'll deploy a new ERC20 token contract for you.
+   [Tool call: deployToken]
+   Result: Token deployed successfully!
+           Contract Address: 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
+           Transaction Hash: 0xd4ec9bf7ca67a581e78a8637974cd84c9c3524a75efe8851b808f0d58879ebd9
+   ```
+2. Transfer tokens to an address:
+   ```
+   👤You: Transfer 100 erc20 tokens to the address 0x6ea5e8971eC8cf32d43AeB18a6999aFc3a3ec65d
+
+   🤖AI: I need to deploy an ERC20 token contract before I can transfer 100 ERC20 tokens to a specified address.
+   [Tool call: deployToken]
+   Result: Token deployed successfully!
+           Contract Address: 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
+           Transaction Hash: 0xd4ec9bf7ca67a581e78a8637974cd84c9c3524a75efe8851b808f0d58879ebd9
+
+   🤖AI: Now I will use the ERC20 token contract I just deployed to transfer 100 tokens to the address 0x6ea5e8971eC8cf32d43AeB18a6999aFc3a3ec65d.
+
+   [Tool call: transferToken with tokenAddress=0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512, 
+               targetAddress=0x6ea5e8971eC8cf32d43AeB18a6999aFc3a3ec65d]
+               
+   🤖AI: ERC20 token transfer has been successfully completed!
+   Details:
+   Token contract address: 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
+   Receiving address: 0x6ea5e8971eC8cf32d43AeB18a6999aFc3a3ec65d
+   Transfer transaction hash: 0x82b7bdc69ffebfc946ab5101cf853a06e64d5aceaf96ca4fe70622fcee89d83e
+   The token has been successfully transferred to the specified address. Do you need to perform other operations?
+   ```
+
+3. Transfer ETH to an address:
+   ```
+   🤖AI: I'll transfer 10 ETH to the specified address.
+   [Tool call: transferETH with targetAddress=0x6ea5e8971eC8cf32d43AeB18a6999aFc3a3ec65d, amount=10]
+   Result: ETH transfer successful!
+           Transaction Hash: 0x9f46076f1c9b84d49c7314d8b8586e20c5c5b389ec56931e510408b3f6052bac
+   ```
+
+
+
+4. Perform batch transfers:
+   ```
+   🤖AI: I'll execute 100 token transfers over 10 seconds.
+   [Tool call: batchTransfer with tokenAddress=0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512, 
+               transactionCount=100, durationSeconds=10]
+   Result: Batch transfer initiated!
+           Processing 100 transactions over 10 seconds.
+   ```
+
+
 
 
 ## Installation
@@ -33,7 +90,7 @@ npm install
 npm run build
 ```
 
-## Quick Start
+## How to use
 
 ### Configuration
 
@@ -43,6 +100,9 @@ Create a `.env` file in the root directory with the following variables:
 PRIVATE_KEY=your_ethereum_private_key
 ETH_L2_RPC=your_layer2_rpc_url
 ```
+
+### Using with Cursor
+Add a command type mcp server in the cursor mcp setting panel and fill in the execution command, for example: ```node \\wsl.localhost\Ubuntu-22.04\root\xxxx\xxxx\layer2-dev\build\index.js```
 
 ### Using with Claude Desktop
 
@@ -63,20 +123,8 @@ ETH_L2_RPC=your_layer2_rpc_url
 3. The tools will now be available in your Claude conversations
 
 
-### Starting the Server
 
-```bash
-npm start
-```
 
-### Using with Claude or other MCP-compatible AI models
-
-1. Configure your AI client to connect to the MCP server
-2. The following tools will be available to the AI:
-   - `deployToken`: Deploy a new ERC20 token contract
-   - `transferETH`: Transfer ETH to a specific address
-   - `transferToken`: Transfer tokens to a specific address
-   - `batchTransfer`: Perform batch transfers to random addresses
 
 ### Testing with MCP Inspector
 
@@ -122,44 +170,6 @@ npm start
     - `durationSeconds`: Total duration in seconds for the batch operation
   - Executes the specified number of transactions over the given time period
 
-## Example Usage
-
-Here's an example of how an AI assistant might use these tools:
-
-1. Deploy a new ERC20 token contract:
-   ```
-   AI: I'll deploy a new ERC20 token contract for you.
-   [Tool call: deployToken]
-   Result: Token deployed successfully!
-           Contract Address: 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
-           Transaction Hash: 0xd4ec9bf7ca67a581e78a8637974cd84c9c3524a75efe8851b808f0d58879ebd9
-   ```
-
-2. Transfer ETH to an address:
-   ```
-   AI: I'll transfer 10 ETH to the specified address.
-   [Tool call: transferETH with targetAddress=0x6ea5e8971eC8cf32d43AeB18a6999aFc3a3ec65d, amount=10]
-   Result: ETH transfer successful!
-           Transaction Hash: 0x9f46076f1c9b84d49c7314d8b8586e20c5c5b389ec56931e510408b3f6052bac
-   ```
-
-3. Transfer tokens to an address:
-   ```
-   AI: I'll transfer tokens to the specified address.
-   [Tool call: transferToken with tokenAddress=0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512, 
-               targetAddress=0x6ea5e8971eC8cf32d43AeB18a6999aFc3a3ec65d]
-   Result: Token transfer successful!
-           Transaction Hash: 0x82b7bdc69ffebfc946ab5101cf853a06e64d5aceaf96ca4fe70622fcee89d83e
-   ```
-
-4. Perform batch transfers:
-   ```
-   AI: I'll execute 100 token transfers over 10 seconds.
-   [Tool call: batchTransfer with tokenAddress=0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512, 
-               transactionCount=100, durationSeconds=10]
-   Result: Batch transfer initiated!
-           Processing 100 transactions over 10 seconds.
-   ```
 
 ## Network Support
 
